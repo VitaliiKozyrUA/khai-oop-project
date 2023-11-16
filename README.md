@@ -1,4 +1,4 @@
 # Audio player
 
 ## Діаграма класів
-![alt text](class-diagran.png)
+![alt text](class-diagram.png)
