@@ -1,1 +1,4 @@
-﻿Console.WriteLine("Hello world!");
+﻿using Project.presentation;
+using Terminal.Gui;
+
+Application.Run<MainWindow>();

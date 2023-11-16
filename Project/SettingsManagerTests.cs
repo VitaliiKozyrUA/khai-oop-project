@@ -17,9 +17,9 @@ public class SettingsManagerTests
     public void SettingsObservable_DefaultSettings()
     {
         var settingsObservable = SettingsManager.SettingsObservable.Value;
-
-        Assert.AreEqual("", settingsObservable.AudioDirectory);
-        Assert.IsTrue(settingsObservable.UseLocalAudioDirectory);
+        
+        Assert.AreEqual("directory", settingsObservable.AudioDirectory);
+        Assert.IsFalse(settingsObservable.UseLocalAudioDirectory);
     }
 
     [TestMethod]

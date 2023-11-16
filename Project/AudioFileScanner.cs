@@ -4,6 +4,19 @@ public class AudioFileScanner
 {
     public List<Audio> Scan(DirectoryInfo directory)
     {
-        throw new NotImplementedException();
+        var audios = new List<Audio>();
+        
+        foreach (var fileInfo in directory.GetFiles())
+        {
+            try
+            {
+                audios.Add(AudioFileParser.Parse(fileInfo));
+            }
+            catch (ParseException e)
+            {
+            }
+        }
+
+        return audios;
     }
 }

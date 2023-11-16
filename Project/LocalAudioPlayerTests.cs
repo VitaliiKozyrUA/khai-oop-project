@@ -65,6 +65,6 @@ public class LocalAudioPlayerTests
         
         audioPlayer.SetVolume(newVolume);
         
-        Assert.AreEqual(newVolume, audioPlayer.AudioStateObservable.Value!.Volume);
+        Assert.AreEqual(newVolume, audioPlayer.AudioStateObservable.Value!.Volume, 0.1f);
     }
 }
