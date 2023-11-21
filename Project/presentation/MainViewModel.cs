@@ -7,7 +7,7 @@ public class MainViewModel
     public BehaviorSubject<MainViewState> MainViewStateObservable { get; } =
         new(new MainViewState());
 
-    private readonly AudioFileScanner _audioFileScanner = new();
+    private readonly AudioFileScanner _audioFileScanner = new LocalAudioFileScanner();
     private readonly IAudioPlayer _audioPlayer = new LocalAudioPlayer();
 
     public MainViewModel()
