@@ -16,6 +16,9 @@ public class SettingsManagerTests
     [TestMethod]
     public void SettingsObservable_DefaultSettings()
     {
+        var newSettings = new Settings("directory", false);
+        
+        SettingsManager.SaveSettings(newSettings);
         var settingsObservable = SettingsManager.SettingsObservable.Value;
         
         Assert.AreEqual("directory", settingsObservable.AudioDirectory);

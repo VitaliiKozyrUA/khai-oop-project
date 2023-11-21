@@ -3,7 +3,7 @@ using NAudio.Wave;
 
 namespace Project;
 
-public class LocalAudioPlayer : IAudioPlayer
+public class LocalAudioPlayer : IAudioPlayer, IDisposable
 {
     private readonly WaveOutEvent _outputDevice = new();
     private AudioFileReader? _audioFileReader;
@@ -68,5 +68,11 @@ public class LocalAudioPlayer : IAudioPlayer
     {
         _outputDevice.Volume = volume;
         UpdateState();
+    }
+
+    public void Dispose()
+    {
+        _audioFileReader?.Dispose();
+        _outputDevice.Dispose();
     }
 }
