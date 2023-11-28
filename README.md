@@ -7,6 +7,8 @@
  - Audio
  - AudioFileParser
  - AudioFileScanner
+ - LocalAudioFileScanner
+ - RemoteAudioFileScanner
  - AudioFileFormat
  - AudioState
  - IAudioPlayer
