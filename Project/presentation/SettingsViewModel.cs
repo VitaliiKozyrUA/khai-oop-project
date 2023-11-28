@@ -2,41 +2,51 @@
 
 namespace Project.presentation;
 
+public delegate void SettingsViewStateChanged(SettingsViewState state);
+
 public class SettingsViewModel
 {
-    public BehaviorSubject<SettingsViewState> SettingsViewStateObservable { get; } =
-        new(new SettingsViewState());
+    private readonly SettingsViewStateChanged _settingsViewStateChanged;
+    private SettingsViewState _settingsViewState;
 
-    public SettingsViewModel()
+    public SettingsViewModel(SettingsViewStateChanged settingsViewStateChanged)
     {
+        _settingsViewStateChanged = settingsViewStateChanged;
         SettingsManager.SettingsObservable.Subscribe(settings =>
-            SettingsViewStateObservable.OnNext(new SettingsViewState(settings))
+            UpdateSettingsViewState(new SettingsViewState(settings))
         );
     }
 
     public void SetAudioDirectory(string directory)
     {
         var newSettingsViewState = new SettingsViewState(
-            SettingsViewStateObservable.Value.Settings with { AudioDirectory = directory }
+            _settingsViewState.Settings with { AudioDirectory = directory }
         );
 
-        SettingsViewStateObservable.OnNext(newSettingsViewState);
+        UpdateSettingsViewState(newSettingsViewState);
     }
 
     public void SetUseLocalAudioDirectory(bool useLocalAudioDirectory)
     {
         var newSettingsViewState = new SettingsViewState(
-            SettingsViewStateObservable.Value.Settings with
+            _settingsViewState.Settings with
             {
                 UseLocalAudioDirectory = useLocalAudioDirectory
             }
         );
 
-        SettingsViewStateObservable.OnNext(newSettingsViewState);
+        UpdateSettingsViewState(newSettingsViewState);
     }
 
+    private void UpdateSettingsViewState(SettingsViewState state)
+    {
+        if(_settingsViewState == state) return;
+        _settingsViewState = state;
+        _settingsViewStateChanged.Invoke(state);
+    }
+    
     public void SaveSettings()
     {
-        SettingsManager.SaveSettings(SettingsViewStateObservable.Value.Settings);
+        SettingsManager.SaveSettings(_settingsViewState.Settings);
     }
 }

@@ -4,7 +4,9 @@ namespace Project.presentation;
 
 public class SettingsDialog : Dialog
 {
-    private readonly SettingsViewModel _viewModel = new();
+    private readonly SettingsViewModel _viewModel;
+    private readonly Action _beep = Console.Beep;
+    private readonly Action<int, int> _beepWithDuration = Console.Beep;
     
     private readonly Button _buttonSave = new("Save", is_default: true);
     private readonly Button _buttonCancel = new("Cancel", is_default: true);
@@ -14,6 +16,8 @@ public class SettingsDialog : Dialog
 
     public SettingsDialog()
     {
+        _viewModel = new(UpdateViewState);
+        
         Width = Dim.Sized(50);
         Height = Dim.Sized(7);
 
@@ -33,12 +37,9 @@ public class SettingsDialog : Dialog
         
         Add(_labelAudioDirectory, _textFieldAudioDirectory, _useLocalDirCheckBox);
     }
-
+    
     private void AssignListeners()
     {
-        _viewModel.SettingsViewStateObservable
-            .SubscribeDistinct(UpdateViewState);
-        
         _textFieldAudioDirectory.TextChanging += (_, e) =>
         {
             _viewModel.SetAudioDirectory(e.NewText);
@@ -46,17 +47,20 @@ public class SettingsDialog : Dialog
 
         _useLocalDirCheckBox.Toggled += (_, e) =>
         {
+            _beepWithDuration(1000, 100);
             _viewModel.SetUseLocalAudioDirectory(e.NewValue!.Value);
         };
 
         _buttonSave.Clicked += (_, e) =>
         {
+            _beep();
             _viewModel.SaveSettings();
             Application.RequestStop();
         };
 
         _buttonCancel.Clicked += (_, e) =>
         {
+            _beep();
             Application.RequestStop();
         };
     }
